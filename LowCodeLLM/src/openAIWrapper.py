@@ -1,16 +1,18 @@
 # Copyright (c) Microsoft Corporation.
 # Licensed under the MIT License.
 
-import os
 import openai
+from dotenv import load_dotenv
+
+load_dotenv()
 
 class OpenAIWrapper:
     def __init__(self, temperature):
-        self.key = os.environ.get("OPENAIKEY")
+        self.key = os.getenv("OPENAIKEY")
         openai.api_key = self.key
 
         # Access the USE_AZURE environment variable
-        self.use_azure = os.environ.get('USE_AZURE')
+        self.use_azure = os.getenv('USE_AZURE')
 
         # Check if USE_AZURE is defined
         if self.use_azure is not None:
@@ -21,11 +23,11 @@ class OpenAIWrapper:
 
         if self.use_azure:
             openai.api_type = "azure"
-            self.api_base = os.environ.get('API_BASE')
+            self.api_base = os.getenv('API_BASE')
             openai.api_base = self.api_base
-            self.api_version = os.environ.get('API_VERSION')
+            self.api_version = os.getenv('API_VERSION')
             openai.api_version = self.api_version
-            self.engine = os.environ.get('MODEL')
+            self.engine = os.getenv('MODEL')
         else:
             self.chat_model_id = "gpt-3.5-turbo"
             
